@@ -7,6 +7,7 @@ const getResource = async (url) => {
 };
 
 
+
 getResource('https://swapi.co/api/people/1/')
     .then((body) => {
     console.log(body);
