@@ -1,55 +1,52 @@
+import React, { Component } from 'react';
+
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import ItemList from '../item-list';
-import PersonDetails from '../planet-details';
+import ErrorButton from '../error-button';
+import PeoplePage from '../people-page';
+import ErrorBoundry from "../error-boundry";
 
 import './app.css';
-import ErrorIndicator from "../error-indicator/error-indicator";
-import PeoplePage from "../people-page/people-page";
 
 export default class App extends Component {
-    state = {
-        showRandomPlanet: true,
-        hasError: false
-    };
 
-    componentDidCatch(){
-        console.log();
-        this.setState({ hasError: true });
-    }
+  state = {
+    showRandomPlanet: true
+  };
 
-    render(){
+  toggleRandomPlanet = () => {
+    this.setState((state) => {
+      return {
+        showRandomPlanet: !state.showRandomPlanet
+      }
+    });
+  };
 
-        if(this.state.hasError){
-            return <ErrorIndicator />
-        }
+  render() {
 
-        const planet = this.state.showRandomPlanet ?
-            <RandomPlanet/> :
-            null;
+    const planet = this.state.showRandomPlanet ?
+      <RandomPlanet/> :
+      null;
 
-            return (
+    return (
+      <ErrorBoundry>
+        <div className="stardb-app">
+          <Header />
+          { planet }
 
-                <div className="stardb-app">
+          <div className="row mb2 button-row">
+            <button
+              className="toggle-planet btn btn-warning btn-lg"
+              onClick={this.toggleRandomPlanet}>
+              Toggle Random Planet
+            </button>
+            <ErrorButton />
+          </div>
 
-                    <Header/>
-                    { planet }
+          <PeoplePage />
 
-                    <button
-                    className="toggle-planet btn btn-warning btn-lg"
-                    onClick={this.toggleRandomPlanet}>
-                        Toggle Random Planet
-                    </button>
-
-                    <PeoplePage/>
-                    <PeoplePage/>
-                    <PeoplePage/>
-                    <PeoplePage/>
-
-                </div>
-
-            );
-
-    }
-
+        </div>
+      </ErrorBoundry>
+    );
+  }
 }
